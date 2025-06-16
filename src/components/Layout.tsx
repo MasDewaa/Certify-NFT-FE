@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { User, Settings, LogOut, Menu, X } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Shield, LogOut, Menu, X } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -8,10 +8,14 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
-  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [isVendor, setIsVendor] = React.useState(false);
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setIsVendor(false);
+  };
 
   const navLinks = [
     { to: '/', label: 'Home' },
@@ -36,7 +40,7 @@ export default function Layout({ children }: LayoutProps) {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
-            <img src="/assets/logo.webp" alt="Certify-NFT_logo" className="h-20 w-15" />
+              <Shield className="h-8 w-8 text-blue-600" />
               <span className="text-xl font-bold text-gray-900">Certify-NFT</span>
             </Link>
 
@@ -108,7 +112,7 @@ export default function Layout({ children }: LayoutProps) {
                 </>
               ) : (
                 <button
-                  onClick={() => setIsLoggedIn(false)}
+                  onClick={handleLogout}
                   className="flex items-center space-x-2 text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
                 >
                   <LogOut className="h-4 w-4" />
@@ -166,7 +170,7 @@ export default function Layout({ children }: LayoutProps) {
               ) : (
                 <button
                   onClick={() => {
-                    setIsLoggedIn(false);
+                    handleLogout();
                     setIsMobileMenuOpen(false);
                   }}
                   className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-red-600 hover:bg-gray-50 transition-colors"
@@ -190,8 +194,8 @@ export default function Layout({ children }: LayoutProps) {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
-                <img src="/assets/logo.webp" alt="Certify-NFT_logo" className="h-20 w-15" />
-                <span className="text-xl font-bold text-gray-900">Certify-NFT</span>
+                <Shield className="h-8 w-8 text-blue-600" />
+                <span className="text-xl font-bold text-gray-900">Certify</span>
               </div>
               <p className="text-gray-600 mb-4 max-w-md">
                 Blockchain-powered certificate issuance platform. Secure, transparent, and verifiable digital certificates as NFTs.
