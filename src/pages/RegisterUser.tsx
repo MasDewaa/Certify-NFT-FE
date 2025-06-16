@@ -1,23 +1,82 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Wallet, Mail, ArrowLeft, CheckCircle } from 'lucide-react';
+import { Wallet, Mail, ArrowLeft, CheckCircle, User } from 'lucide-react';
 
 export default function RegisterUser() {
-  const [email, setEmail] = useState('');
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: ''
+  });
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
+  const [errors, setErrors] = useState({
+    fullName: '',
+    email: ''
+  });
+
+  const isValidEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   const handleWalletConnect = () => {
     // Placeholder for wallet connection
     setIsConnected(true);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    // Clear error when user starts typing
+    setErrors(prev => ({
+      ...prev,
+      [name]: ''
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {
+      fullName: '',
+      email: ''
+    };
+    let isValid = true;
+
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = 'Full name is required';
+      isValid = false;
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+      isValid = false;
+    } else if (!isValidEmail(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isConnected || !acceptTerms) return;
     
-    // Handle registration logic
-    console.log('User registration:', { email, acceptTerms });
+    if (validateForm()) {
+      // Handle registration logic
+      console.log('User registration:', { ...formData, acceptTerms });
+    }
+  };
+
+  const isFormValid = () => {
+    return (
+      isConnected &&
+      acceptTerms &&
+      formData.fullName.trim() !== '' &&
+      isValidEmail(formData.email)
+    );
   };
 
   return (
@@ -72,22 +131,54 @@ export default function RegisterUser() {
               )}
             </div>
 
-            {/* Email (Optional) */}
+            {/* Full Name */}
+            <div>
+              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
+                Full Name <span className="text-red-500">*</span>
+              </label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  required
+                  className={`w-full pl-10 pr-4 py-3 border ${
+                    errors.fullName ? 'border-red-500' : 'border-gray-300'
+                  } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors`}
+                  placeholder="Enter your full name as it will appear on certificates"
+                />
+              </div>
+              {errors.fullName && (
+                <p className="mt-1 text-sm text-red-500">{errors.fullName}</p>
+              )}
+            </div>
+
+            {/* Email */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address (Optional)
+                Email Address <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <input
                   type="email"
                   id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                  placeholder="your@email.com"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  className={`w-full pl-10 pr-4 py-3 border ${
+                    errors.email ? 'border-red-500' : 'border-gray-300'
+                  } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors`}
+                  placeholder="mail@example.com"
                 />
               </div>
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+              )}
               <p className="text-sm text-gray-500 mt-1">
                 We'll send you event updates and certificate notifications
               </p>
@@ -117,7 +208,7 @@ export default function RegisterUser() {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={!isConnected || !acceptTerms}
+              disabled={!isFormValid()}
               className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-3 px-4 rounded-lg font-semibold transition-all transform hover:scale-105 disabled:transform-none"
             >
               Complete Registration
