@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Shield, User, Settings, LogOut, Menu, X } from 'lucide-react';
+import { User, Settings, LogOut, Menu, X } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -36,8 +36,8 @@ export default function Layout({ children }: LayoutProps) {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
-              <Shield className="h-8 w-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-900">Certify</span>
+            <img src="/assets/favicon.webp" alt="Certify-NFT_logo" className="h-10 w-8" />
+              <span className="text-xl font-bold text-gray-900">Certify-NFT</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -190,8 +190,8 @@ export default function Layout({ children }: LayoutProps) {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
-                <Shield className="h-8 w-8 text-blue-600" />
-                <span className="text-xl font-bold text-gray-900">Certify</span>
+                <img src="/assets/favicon.webp" alt="Certify-NFT_logo" className="h-10 w-8" />
+                <span className="text-xl font-bold text-gray-900">Certify-NFT</span>
               </div>
               <p className="text-gray-600 mb-4 max-w-md">
                 Blockchain-powered certificate issuance platform. Secure, transparent, and verifiable digital certificates as NFTs.
