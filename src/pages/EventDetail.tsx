@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, MapPin, Users, Clock, Award, ArrowLeft, ExternalLink } from 'lucide-react';
 
@@ -10,6 +10,46 @@ export default function EventDetail() {
     minutes: 34,
     seconds: 22
   });
+
+  // Mock countdown timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(prevTime => {
+        const newTime = { ...prevTime };
+        
+        // Decrease seconds
+        if (newTime.seconds > 0) {
+          newTime.seconds -= 1;
+        } else {
+          newTime.seconds = 59;
+          
+          // Decrease minutes
+          if (newTime.minutes > 0) {
+            newTime.minutes -= 1;
+          } else {
+            newTime.minutes = 59;
+            
+            // Decrease hours
+            if (newTime.hours > 0) {
+              newTime.hours -= 1;
+            } else {
+              newTime.hours = 23;
+              
+              // Decrease days
+              if (newTime.days > 0) {
+                newTime.days -= 1;
+              }
+            }
+          }
+        }
+        
+        return newTime;
+      });
+    }, 1000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(timer);
+  }, []);
 
   // Mock event data
   const event = {
@@ -44,18 +84,18 @@ export default function EventDetail() {
     switch(event.status) {
       case 'upcoming':
         return (
-          <div className="bg-blue-50 border border-blue-200 rounded-xl  w-full mx-auto">
-            <h3 className="text-lg font-semibold text-blue-900 mb-6 flex items-center justify-center">
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+            <h3 className="text-lg font-semibold text-blue-900 mb-8 flex items-center justify-center">
               <Clock className="h-5 w-5 mr-2" />
               Event Starts In
             </h3>
 
-            <div className="grid grid-cols-4 gap-3 mb-6">
+            <div className="grid grid-cols-4 gap-3 mb-8">
               {Object.entries(timeLeft).map(([unit, value]) => (
                 <div key={unit} className="flex flex-col items-center">
                   <div className="bg-white rounded-2xl shadow-md border border-blue-100 w-full px-4 py-4 flex flex-col items-center justify-center">
                     <div className="text-xl sm:text-2xl font-extrabold text-blue-600">{value}</div>
-                    <div className="mt-1 text-wrap text-xs font-semibold text-blue-700 tracking-wide uppercase ">{unit}</div>
+                    <div className="mt-1 text-wrap text-xs font-semibold text-blue-700 tracking-wide uppercase">{unit}</div>
                   </div>
                 </div>
               ))}
@@ -63,7 +103,7 @@ export default function EventDetail() {
 
             <Link
               to={`/whitelist/${event.id}`}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold text-center transition-all"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 px-4 rounded-lg font-semibold text-center transition-all"
             >
               Join Whitelist
             </Link>
