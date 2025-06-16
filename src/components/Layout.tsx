@@ -36,7 +36,7 @@ export default function Layout({ children }: LayoutProps) {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
-            <img src="/assets/favicon.webp" alt="Certify-NFT_logo" className="h-10 w-8" />
+            <img src="/assets/logo.webp" alt="Certify-NFT_logo" className="h-20 w-15" />
               <span className="text-xl font-bold text-gray-900">Certify-NFT</span>
             </Link>
 
@@ -190,7 +190,7 @@ export default function Layout({ children }: LayoutProps) {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
-                <img src="/assets/favicon.webp" alt="Certify-NFT_logo" className="h-10 w-8" />
+                <img src="/assets/logo.webp" alt="Certify-NFT_logo" className="h-20 w-15" />
                 <span className="text-xl font-bold text-gray-900">Certify-NFT</span>
               </div>
               <p className="text-gray-600 mb-4 max-w-md">
