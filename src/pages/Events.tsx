@@ -166,7 +166,7 @@ export default function Events() {
                   <span className={`inline-flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(event.status)}`}>
                     {getStatusIcon(event.status)}
                     <span className="capitalize">{event.status}</span>
-                  </span>
+                  </span> 
                 </div>
               </div>
 
